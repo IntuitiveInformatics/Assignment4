@@ -27,8 +27,27 @@
 
 # * * * Token Class * * * 
 # Has variables: Total Freq, Dict with Key of Doc# and value is #occurances inside, IDF value
-# Doc IDs are of 00-000 format, first two digits are folder number, followed by doc number in each folder
+# Doc IDs are of 00/000 format, first two digits are folder number, followed by doc number in each folder
+import math
 
+class TokenInfo:
+   
+    def __inti__(self):
+       self.doc_and_freq = {} # {'Doc_ID', TF(t)}
+       self.IDF = 0
+       self.num_docs = 0
+
+    def add_doc(self, doc_id, freq_of_word, total_words):
+        if doc_id in doc_and_freq:
+            print('Error doc id already exists')
+        else:
+            doc_and_freq[doc_id] = freq_of_word/total_words
+
+    def generate_IDF(self):
+        self.IDF = math.log10(37497/num_docs)
+
+    def update_num_docs(self):
+        self.num_docs = len (doc_and_freq)
 
 
 
