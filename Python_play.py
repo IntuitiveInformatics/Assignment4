@@ -86,7 +86,12 @@ sample_dict['one'] = one
 sample_dict['two'] = two
 two_ave_tfidf = 0
 
-if(num_tokens_entered <= 2): # <= 2 key words entered
+if (num_tokens_entered < 1):
+    print('No input, cannot process empty input')
+elif (num_tokens_entered < 2):
+    for k, v in sorted(a_list.items(), key=lambda x: -x[1]): # NOTE: switch a_list to main dict scoped in to single token entered
+        print(str(v) + '\t' + k) 
+elif (num_tokens_entered <= 2): # <= 2 key words entered
    counter = 0
    for k, v in sorted(sample_dict['two'].doc_and_freq.items(), key=lambda x: -x[1]):
         two_ave_tfidf += v
