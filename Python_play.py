@@ -76,22 +76,45 @@ two.generate_IDF() # Generate the IDF shit
 two.update_num_docs() # Count docs of the shit
 a_list = {} # create a list(dicked) to collect doc ids of top 10
 counter = 0 # only need top ten of them shits, so this keeps track
-for key,value in one.doc_and_freq.items(): # Run loop through 1st word entered to find intersections with 2nd word
-    if(key in two.doc_and_freq): # Looking for intersections of two key words
-        a_list[key] = value # If so then add it to the dicked list, might need to modify for URL copying shit
-        counter += 1 # Pythons dumb ass way to increment a counter
-    if(counter > 9): # If we got enough shit in dicked then we good niggah, bail
-        break
+num_tokens_entered = 2
 
-if(counter < 9): # If somehow we didnt get enough in the dicked then grab rest from first key word
-    for key,value in one.doc_and_freq.items(): # Find other relevant docs
-        if(key not in a_list.keys()): # Make sure they already not in the dicked
-            a_listed[key] = value # Add to dicked
-            counter += 1 # Increment counter
-        if(counter > 9): # If we already got a full dicked, bail
-            break
-        
-    
+sample_dict = {} # to hold the two tokens entered by user simulating the real format of our main dict
+output_dict = {} # to hold possible output results, key = doc_id, value = URL
+sample_dict['one'] = one
+sample_dict['two'] = two
+two_ave_tfidf = 0
+
+if(num_tokens_entered <= 2): # <= 2 key words entered
+   counter = 0
+   for k, v in sorted(sample_dict['two'].doc_and_freq.items(), key=lambda x: -x[1]):
+        two_ave_tfidf += v
+        counter += 1
+        if(counter >= max_docs):
+           break
+   two_ave_tfidf /= counter # create ave based on max_docs or less
+   
+   counter = 0
+   for k, v in sorted(sample_dict['one'].doc_and_freq.items(), key=lambda x: -x[1]):
+       # going to have to test this if statement, not sure if python works optimal enough to skip 
+       # the second check if first failed in an and statement
+       if(counter >= max_url_output):
+           break
+       if(k in sample_dict['one'].doc_and_freq.keys() and sample_dict['two'].doc_and_freq[k] >= two_ave_tfidf):
+           if(k not in output_dict.keys()): # dont overwrite a previous entry
+               output_dict[k] = sample_dict['one'].doc_and_URL[k] # add to output dict
+               counter += 1
+
+   if(counter < max_url_output): # if we didn't get enough output results, fill with next best results
+       for k, v in sorted(sample_dict['one'].doc_and_freq.items(), key=lambda x: -x[1]):
+           if(counter >= max_url_output):
+               break
+           if(k not in output_dict.keys()):
+               output_dict[k] = sample_dict['one'].doc_and_URL[k]
+               counter += 1
+               
+else: # > 2 entries
+   # some code that does some shit
+
 for k, v in sorted(a_list.items(), key=lambda x: -x[1]): # Display them dicked items from best to worst
     print(str(v) + '\t' + k) 
         
