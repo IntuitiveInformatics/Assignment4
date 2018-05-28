@@ -30,42 +30,40 @@
 # Doc IDs are of 00/000 format, first two digits are folder number, followed by doc number in each folder
 import math
 
+
 class TokenInfo:
    
     def __init__(self):
-       self.doc_and_freq = {} # {'Doc_ID', TF(t)}
-       self.IDF = 0
-       self.num_docs = 0
+        self.doc_and_freq = {} # {'Doc_ID', TF(t)}
+        self.IDF = 0
+        self.num_docs = 0
+        self.url = {}
 
-    def add_doc(self, doc_id, freq_of_word, total_words):
+    def add_doc(self, doc_id, freq_of_word, total_words, url):
         if doc_id in self.doc_and_freq:
             print('Error doc id already exists')
         else:
             self.doc_and_freq[doc_id] = float(freq_of_word)/total_words
-            self.update_num_docs()
-            self.generate_IDF()
+            self.url[doc_id] = url
+
     def generate_IDF(self):
-        self.IDF = math.log10(37497/float(self.num_docs))
+        self.IDF = math.log10(37497 / (1 + float(self.num_docs)))
 
     def update_num_docs(self):
         self.num_docs = len(self.doc_and_freq)
 
     def to_string(self):
-        string_doc = "{"
-        n = 0
         for doc, tf in self.doc_and_freq.items():
-            if n != 0:
-                string_doc += ", \"" + doc + "\": " + str(tf)
-            else:
-                string_doc += "\"" + doc + "\": " + str(tf)
-            n += 1
-        string_doc += "}"
-        return {"doc_and_freq": self.doc_and_freq, "IDF": str(self.IDF), "num_docs": str(self.num_docs)}
+            self.update_num_docs()
+            self.generate_IDF()
+            tf_idf = round(tf * self.IDF, 4)
+            self.doc_and_freq[doc] = tf_idf
+        return {"doc_and_freq": self.doc_and_freq, "num_docs": str(self.num_docs), "doc_and_url": self.url}
 
 def test():
     apple = TokenInfo()
-    apple.add_doc("0/100", 200, 10002)
-    apple.add_doc("0/203", 2104, 10300)
+    apple.add_doc("0/100", 200, 10002, "http://nltk.com")
+    apple.add_doc("0/203", 2104, 10300, "http://applesauce.com")
     apple.update_num_docs()
     apple.generate_IDF()
     print(apple.to_string())
