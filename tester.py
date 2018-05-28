@@ -67,3 +67,10 @@ def test():
     apple.update_num_docs()
     apple.generate_IDF()
     print(apple.to_string())
+   
+#Tokenize two words entered
+#Find results from both
+#Create two dict with top 10 results from each
+#Find if any Doc IDs intersect
+#List docs with intersections first + high TF-IDFs
+#If < 10 intersections found list first word results
