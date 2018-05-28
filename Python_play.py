@@ -7,6 +7,9 @@ import math
 #List docs with intersections first + high TF-IDFs
 #If < 10 intersections found list first word results
 
+max_url_output = 10
+max_docs = 200
+
 class TokenInfo:
    
     def __init__(self):
