@@ -74,9 +74,8 @@ one.generate_IDF() # Generate the IDF shit
 one.update_num_docs() # Count docs of the shit
 two.generate_IDF() # Generate the IDF shit
 two.update_num_docs() # Count docs of the shit
-a_list = {} # create a list(dicked) to collect doc ids of top 10
 counter = 0 # only need top ten of them shits, so this keeps track
-num_tokens_entered = 2
+num_tokens_entered = 2 # put variable instead of 2, but use 2 to test
 
 sample_dict = {} # to hold the two tokens entered by user simulating the real format of our main dict
 output_dict = {} # to hold possible output results, key = doc_id, value = URL
@@ -115,6 +114,6 @@ if(num_tokens_entered <= 2): # <= 2 key words entered
 else: # > 2 entries
    # some code that does some shit
 
-for k, v in sorted(a_list.items(), key=lambda x: -x[1]): # Display them dicked items from best to worst
+for k, v in sorted(output_dict.items(), key=lambda x: -x[1]): # Display them dicked items from best to worst
     print(str(v) + '\t' + k) 
         
