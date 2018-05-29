@@ -53,7 +53,7 @@ else: # > 2 entries
     two_ave_tfidf /= float(counter) # create ave based on max_docs
     counter = 0
     for k, v in sorted(sample_dict[token_list[2]].doc_and_freq.items(), key=lambda x: -x[1]): 
-        two_ave_tfidf += v
+        three_ave_tfidf += v
         counter += 1
         if(counter >= max_docs):
             break
