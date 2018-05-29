@@ -44,8 +44,41 @@ elif (num_tokens_entered <= 2): # <= 2 key words entered
                counter += 1
                
 else: # > 2 entries
-   # some code that does some shit
-   print('Entered > 2 tokens')
+   counter = 0
+    for k, v in sorted(sample_dict[token_list[1]].doc_and_freq.items(), key=lambda x: -x[1]): 
+        two_ave_tfidf += v
+        counter += 1
+        if(counter >= max_docs):
+            break
+    two_ave_tfidf /= float(counter) # create ave based on max_docs
+    counter = 0
+    for k, v in sorted(sample_dict[token_list[2]].doc_and_freq.items(), key=lambda x: -x[1]): 
+        two_ave_tfidf += v
+        counter += 1
+        if(counter >= max_docs):
+            break
+    three_ave_tfidf /= float(counter) # create ave based on max_docs
+    counter = 0
+
+    for i in token_list: # not n^3 ... i,j,k will be < 4 90% of the time, ie. 3^3 = 27 = O(constant), O(27N)
+        if(counter >= max_url_output):
+            break
+        for j in token_list:
+            if(i == j or counter >= max_url_output):
+                break
+            for k in token_list:
+                if(i == k or i == j or j == k or counter >= max_url_output):
+                    break
+                for key,value in sorted(main_dict[i].doc_and_freq.items(), key=lambda x: -x[1]):
+                    if(key in main_dict[j].doc_and_freq.keys() and key in main_dict[k].doc_and_freq.keys() and counter < max_url_output):
+                        if(main_dict[j].doc_and_freq[key] >= two_ave_tfidf and main_dict[k].doc_and_freq[key] >= three_ave_tfidf):
+                            output_dict[key] = main_dict[j].doc_and_URL[key]
+                            counter += 1
+    if(counter < max_url_output): #if this occurs then efficency will decrease by at most n
+        for key,value in sorted(main_dict[token_list[0]].doc_and_freq.items(), key=lambda x: -x[1]):
+            if(key not in output_dict.keys() and counter < max_url_output):
+                output_dict[key] = main_dict[token_list[0]].doc_and_URL[key]
+                counter += 1
 
 for k, v in sorted(output_dict.items(), key=lambda x: -x[1]): # Display them dicked items from best to worst
     print(str(v) + '\t' + k) 
