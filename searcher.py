@@ -9,7 +9,8 @@ from nltk.stem import PorterStemmer
 # find the token class pertaining to the input token
 # go to tokenclass.doc_and_freq and use this as dict
 
-
+# max urls to be output can be modified to output more results if needed
+# max docs can be changed to tighten or loosen the average URL values pertaining to a specific keyword
 max_url_output = 10
 max_docs = 200
 
@@ -50,17 +51,17 @@ with open("tokens.json", "r") as a:
     variable = input("Search for something!: ")        # How we are going to be getting the query until we write a GUI
     query_length, words = tokenize(variable)            # This counts the query length and holds the words that were tokenized/stemmed
     print(words)                                        # This prints the query list
-    if (query_length < 1):
+    if (query_length < 1):                              # If nothing entered
         print('No input, cannot process empty input')
-    elif (query_length < 2):
+    elif (query_length < 2):                            # If one token entered
         counter = 0
         for k, v in sorted(wordList[words[0]]["doc_and_freq"].items(),
-                           key=lambda x: -x[1]):  # NOTE: switch one to first entered token
+                           key=lambda x: -x[1]):  
             if counter > 9:
                 break
             counter += 1
             print(str(v) + '\t' + k + '\t' + wordList[words[0]]["doc_and_url"][k])
-    elif (query_length <= 2):  # <= 2 key words entered
+    elif (query_length <= 2):  # 2 tokens entered
         counter = 0
         for k, v in sorted(wordList[words[1]]["doc_and_freq"].items(), key=lambda x: -x[1]):
             two_ave_tfidf += v
@@ -71,8 +72,6 @@ with open("tokens.json", "r") as a:
 
         counter = 0
         for k, v in sorted(wordList[words[0]]["doc_and_freq"].items(), key=lambda x: -x[1]):
-            # going to have to test this if statement, not sure if python works optimal enough to skip
-            # the second check if first failed in an and statement
             if (counter >= max_url_output):
                 break
             if (k in wordList[words[1]]["doc_and_freq"].keys()):
@@ -105,7 +104,7 @@ with open("tokens.json", "r") as a:
             counter += 1
             if (counter >= max_docs):
                 break
-        three_ave_tfidf /= float(counter)  # create ave based on max_docs
+        three_ave_tfidf /= float(counter)  # create ave based on max_docs or less
         counter = 0
 
         for i in words:  # not n^3 ... i,j,k will be < 4 90% of the time, ie. 3^3 = 27 = O(constant), O(27N)
@@ -130,7 +129,7 @@ with open("tokens.json", "r") as a:
                     output_dict[key] = wordList[words[0]]["doc_and_url"][key]
                     counter += 1
 
-for k, v in output_dict.items():  # Display them dicked items from best to worst
+for k, v in output_dict.items():  # Display results
     print(k + ':\t' + v)
 
 
