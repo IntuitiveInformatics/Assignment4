@@ -15,12 +15,10 @@ def tokenize(text):
     words = (re.sub('[\W_]', ' ', text).lower())    # This gets rid of any non-alphanumerics
     token_list = words.split()                      # This splits the words at any white-space
     wordlist = defaultdict(int)                     # Creating a defaultDictionary
-    num_words = 0
     for token in token_list:                        # For every token in the query
         stemmed = stemmer.stem(token)               # Stem it
         wordlist[stemmed] += 1                      # add it to the defaultDictionary
-        num_words += 1
-    return num_words, wordlist
+    return len(wordlist), wordlist
 
     """
     words = (re.sub('[\W_]', ' ', text).lower())
