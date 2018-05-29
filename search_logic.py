@@ -9,6 +9,7 @@ num_tokens_entered = 2 # put variable or len(tokens inputted list)
 sample_dict = {} # main dict
 output_dict = {} # to hold possible output results, key = doc_id, value = URL
 two_ave_tfidf = 0
+three_ave_tfidf = 0
 
 if (num_tokens_entered < 1):
     print('No input, cannot process empty input')
