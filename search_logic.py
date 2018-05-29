@@ -31,7 +31,7 @@ elif (num_tokens_entered <= 2): # <= 2 key words entered
        # the second check if first failed in an and statement
        if(counter >= max_url_output):
            break
-       if(k in sample_dict['one'].doc_and_freq.keys() and sample_dict['two'].doc_and_freq[k] >= two_ave_tfidf):
+       if(k in sample_dict['two'].doc_and_freq.keys() and sample_dict['two'].doc_and_freq[k] >= two_ave_tfidf):
            if(k not in output_dict.keys()): # dont overwrite a previous entry
                output_dict[k] = sample_dict['one'].doc_and_URL[k] # add to output dict
                counter += 1
